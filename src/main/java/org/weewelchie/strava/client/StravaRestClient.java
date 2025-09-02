@@ -2,6 +2,8 @@ package org.weewelchie.strava.client;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -11,14 +13,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.weewelchie.strava.beans.StravaAccessToken;
-import org.weewelchie.strava.beans.StravaAthlete;
-import org.weewelchie.strava.beans.StravaAthleteStats;
-import org.weewelchie.strava.beans.StravaRefreshToken;
+import org.weewelchie.strava.beans.*;
 import org.weewelchie.strava.config.StravaConfigProperties;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 public class StravaRestClient {
@@ -79,7 +78,7 @@ public class StravaRestClient {
         return stravaAthleteStats;
     }
 
-    public JsonNode getAthleteActivities(String numActivities) throws JsonProcessingException {
+    public List<StravaActivity> getAthleteActivities(String numActivities) throws IOException {
         log.info("getting Athlete Activities ");
 
         Map<String, String> uriVariables = new HashMap<>();
@@ -88,6 +87,7 @@ public class StravaRestClient {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity entity = new HttpEntity<>(headers);
         headers.setBearerAuth(stravaRefreshToken.getAccessToken());
+
         ResponseEntity<String> response
                 = restTemplate.exchange(GET_ATHLETE_ACTIVITIES, HttpMethod.GET,entity, String.class, uriVariables);
         Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
@@ -95,8 +95,15 @@ public class StravaRestClient {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(response.getBody());
 
-        log.info("Athlete Activities: " +  root);
-        return root;
+        ObjectMapper objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        TypeReference<List<StravaActivity>> jacksonTypeReference = new TypeReference<List<StravaActivity>>() {};
+
+        List<StravaActivity> activities = objectMapper.readValue(root.traverse(), jacksonTypeReference);
+
+        log.info("Athlete Stats: " +  activities);
+
+        return activities;
     }
 
     @Bean
