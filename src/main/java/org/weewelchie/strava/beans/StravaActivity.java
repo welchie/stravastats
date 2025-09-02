@@ -1,6 +1,8 @@
 package org.weewelchie.strava.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.jdi.DoubleValue;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,71 +13,162 @@ import lombok.ToString;
 @JsonIgnoreProperties
 public class StravaActivity {
 
+    @JsonProperty("resource_state")
+    private String resourceState;
 
+    @JsonProperty("athlete")
+    private StravaAthlete stravaAthlete;
+
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("distance")
+    private Double distance;
+
+    @JsonProperty("moving_time")
+    private Integer movingTime;
+
+    @JsonProperty("elapsed_time")
+    private Integer elapsedTime;
+
+    @JsonProperty("total_elevation_gain")
+    private Integer totalElevationGain;
+
+    @JsonProperty("type")
+    private String type;
+
+    @JsonProperty("sport_type")
+    private String sportType;
+
+    @JsonProperty("workout_type")
+    private String workoutType;
+
+    @JsonProperty("id")
+    private String id;
+
+    @JsonProperty("start_date")
+    private String startDate;
+
+    @JsonProperty("start_date_local")
+    private String startDateLocal;
+
+    @JsonProperty("timezone")
+    private String timeZone;
+
+    @JsonProperty("utc_offset")
+    private String utcOffset;
+
+    @JsonProperty("location_city")
+    private String locationCity;
+
+    @JsonProperty("location_county")
+    private String locationCounty;
+
+    @JsonProperty("location_state")
+    private String locationState;
+
+    @JsonProperty("location_country")
+    private String locationCountry;
+
+    @JsonProperty("achievement_count")
+    private String achievementCount;
+
+    @JsonProperty("kudos_count")
+    private String kudos_count;
+
+    @JsonProperty("comment_count")
+    private String comment_count;
+
+    @JsonProperty("athlete_count")
+    private String athleteCount;
+
+    @JsonProperty("photo_count")
+    private String photo_count;
+
+    @JsonProperty("map")
+    private StravaMap map;
+
+    @JsonProperty("trainer")
+    private String trainer;
+
+    @JsonProperty("commute")
+    private String commute;
+
+    @JsonProperty("manual")
+    private String manual;
+
+    @JsonProperty("private")
+    private String privateActivity;
+
+    @JsonProperty("visibility")
+    private String visibility;
+
+    @JsonProperty("flagged")
+    private String flagged;
+
+    @JsonProperty("gear_id")
+    private String gearId;
+
+    @JsonProperty("start_latlng")
+    private String[] startLatlng;
+
+   @JsonProperty("end_latlng")
+   private String[] endLatlng;
+
+    @JsonProperty("sverasge_speed")
+    private String averageSpeed;
+
+    @JsonProperty("max_speed")
+    private String maxSpeed;
+
+    @JsonProperty("average_cadence")
+    private String averageCadence;
+
+    @JsonProperty("has_heartrate")
+    private String hasHeartRate;
+
+    @JsonProperty("average_heartrate")
+    private String averageHeartrate;
+
+    @JsonProperty("max_heartrate")
+    private String maxHeartrate;
+
+    @JsonProperty("heartrate_opt_out")
+    private String heartrateOptOut;
+
+    @JsonProperty("display_hide_heartrate_option")
+    private String displayHideHeartrateOption;
+
+    @JsonProperty("elev_high")
+    private String elevationHigh;
+
+    @JsonProperty("elev_low")
+    private String elevstionLow;
+
+    @JsonProperty("upload_id")
+    private String uploadId;
+
+    @JsonProperty("upload_id_str")
+    private String uplaodIdStr;
+
+    @JsonProperty("external_id")
+    private String externalId;
+
+    @JsonProperty("from_accepted_tag")
+    private String fromAcceptedTag;
+
+    @JsonProperty("pr_count")
+    private String prCount;
+
+    @JsonProperty("total_photo_count")
+    private String totalPhotoCount;
+
+    @JsonProperty("has_kudoed")
+    private String hasKudoed;
 
 
     /*
 
-    {
-        "resource_state": 2,
-        "athlete": {
-            "id": 13986969,
-            "resource_state": 1
-        },
-        "name": "Afternoon Run warm down ⛅",
-        "distance": 1418.7,
-        "moving_time": 559,
-        "elapsed_time": 559,
-        "total_elevation_gain": 15.0,
-        "type": "Run",
-        "sport_type": "Run",
-        "workout_type": 0,
-        "id": 15523786392,
-        "start_date": "2025-08-20T12:05:53Z",
-        "start_date_local": "2025-08-20T13:05:53Z",
-        "timezone": "(GMT+00:00) Europe/London",
-        "utc_offset": 3600.0,
-        "location_city": null,
-        "location_state": null,
-        "location_country": null,
-        "achievement_count": 0,
-        "kudos_count": 0,
-        "comment_count": 0,
-        "athlete_count": 1,
-        "photo_count": 0,
-        "map": {
-            "id": "a15523786392",
-            "summary_polyline": "yv`uInpnSLdAEfAB^d@|BXt@\\j@Tr@P~@\\zC\\xBJbA`@HNEPX`Au@`@_@d@Ob@AZj@L`@VzAB`AC|@K~@D^CdCJ`Aj@nBb@fAd@pB\\h@b@Ld@Bb@Md@NZf@d@Z`@\\",
-            "resource_state": 2
-        },
-        "trainer": false,
-        "commute": false,
-        "manual": false,
-        "private": false,
-        "visibility": "everyone",
-        "flagged": false,
-        "gear_id": "g17748696",
-        "start_latlng": [
-            56.041933,
-            -3.355312
-        ],
-        "end_latlng": [
-            56.035716,
-            -3.369998
-        ],
-        "average_speed": 2.538,
-        "max_speed": 3.3,
-        "average_cadence": 91.7,
-        "has_heartrate": true,
-        "average_heartrate": 115.2,
-        "max_heartrate": 138.0,
-        "heartrate_opt_out": false,
-        "display_hide_heartrate_option": true,
-        "elev_high": 52.3,
-        "elev_low": 36.5,
-        "upload_id": 16578363179,
-        "upload_id_str": "16578363179",
-        "external_id": "garmin_ping_471508260299",
         "from_accepted_tag": false,
         "pr_count": 0,
         "total_photo_count": 0,
