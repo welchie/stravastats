@@ -6,21 +6,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
 @Getter
+@Setter
 @ToString
 @JsonIgnoreProperties
-public class StravaMap
-{
-    @JsonProperty("id")
-    private String id;
-
-    @JsonProperty("polyline")
-    private String polyline;
-
-    @JsonProperty("summary_polyline")
-    private String summary_polyline;
+public class StravaActivityShort {
 
     @JsonProperty("resource_state")
     private String resourceState;
+
+    @JsonProperty("id")
+    private String id;
 }

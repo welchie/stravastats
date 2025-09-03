@@ -2,7 +2,6 @@ package org.weewelchie.strava.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sun.jdi.DoubleValue;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,7 +16,7 @@ public class StravaActivity {
     private String resourceState;
 
     @JsonProperty("athlete")
-    private StravaAthlete stravaAthlete;
+    private StravaAthleteShort stravaAthlete;
 
     @JsonProperty("name")
     private String name;
@@ -115,7 +114,7 @@ public class StravaActivity {
    @JsonProperty("end_latlng")
    private String[] endLatlng;
 
-    @JsonProperty("sverasge_speed")
+    @JsonProperty("average_speed")
     private String averageSpeed;
 
     @JsonProperty("max_speed")
@@ -143,13 +142,13 @@ public class StravaActivity {
     private String elevationHigh;
 
     @JsonProperty("elev_low")
-    private String elevstionLow;
+    private String elevationLow;
 
     @JsonProperty("upload_id")
     private String uploadId;
 
     @JsonProperty("upload_id_str")
-    private String uplaodIdStr;
+    private String uploadIdStr;
 
     @JsonProperty("external_id")
     private String externalId;
@@ -166,14 +165,4 @@ public class StravaActivity {
     @JsonProperty("has_kudoed")
     private String hasKudoed;
 
-
-    /*
-
-        "from_accepted_tag": false,
-        "pr_count": 0,
-        "total_photo_count": 0,
-        "has_kudoed": false
-    }
-
-     */
 }

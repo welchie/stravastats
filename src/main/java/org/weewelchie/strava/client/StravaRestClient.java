@@ -23,17 +23,17 @@ import java.util.*;
 public class StravaRestClient {
 
     private final StravaConfigProperties stravaConfigProperties;
-    private final String GET_ATHLETE_BY_ACCESS_TOKEN = "https://www.strava.com/api/v3/athlete?access_token=";
-    private final String GET_ATHLETE_STATS = "https://www.strava.com/api/v3/athletes/{ATHLETE_ID}/stats?access_token={ACCESS_TOKEN}";
-    private final String GET_ATHLETE_ACTIVITIES = "https://www.strava.com/api/v3/athlete/activities?per_page={pages}";
-    private final String GET_DETAILED_ACTIVITY = "https://www.strava.com/api/v3/activities/";
-    private final String REFRESH_TOKEN_URL = "https://www.strava.com/api/v3/oauth/token?client_id={CLIENT_ID}&client_secret={CLIENT_SECRET}&grant_type=refresh_token&refresh_token={REFRESH_TOKEN}";
+    private final static String GET_ATHLETE_BY_ACCESS_TOKEN = "https://www.strava.com/api/v3/athlete?access_token=";
+    private final static String GET_ATHLETE_STATS = "https://www.strava.com/api/v3/athletes/{ATHLETE_ID}/stats?access_token={ACCESS_TOKEN}";
+    private final static String GET_ATHLETE_ACTIVITIES = "https://www.strava.com/api/v3/athlete/activities?per_page={pages}";
+    private final static String GET_DETAILED_ACTIVITY = "https://www.strava.com/api/v3/activities/{ACTIVITY_ID}?include_all_efforts=true";
+    private final static String REFRESH_TOKEN_URL = "https://www.strava.com/api/v3/oauth/token?client_id={CLIENT_ID}&client_secret={CLIENT_SECRET}&grant_type=refresh_token&refresh_token={REFRESH_TOKEN}";
 
-    private static final Double METRES_TO_MILES = 0.000621371;
+    private final static Double METRES_TO_MILES = 0.000621371;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private static final Logger log = LoggerFactory.getLogger(StravaRestClient.class);
+    private final Logger log = LoggerFactory.getLogger(StravaRestClient.class);
 
     private StravaRefreshToken stravaRefreshToken;
 
@@ -52,7 +52,6 @@ public class StravaRestClient {
                 = restTemplate.getForEntity(GET_ATHLETE_BY_ACCESS_TOKEN + stravaRefreshToken.getAccessToken(), StravaAthlete.class);
         Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
 
-        ObjectMapper mapper = new ObjectMapper();
         StravaAthlete stravaAthlete = response.getBody();
 
         Assertions.assertNotNull(stravaAthlete.getFirstName());
@@ -61,7 +60,7 @@ public class StravaRestClient {
 
     }
 
-    public StravaAthleteStats getAthleteStats() throws JsonProcessingException {
+    public StravaAthleteStats getAthleteStats() {
         log.info("getting Athlete Stats");
 
         Map<String, String> uriVariables = new HashMap<>();
@@ -71,7 +70,6 @@ public class StravaRestClient {
                 = restTemplate.getForEntity(GET_ATHLETE_STATS, StravaAthleteStats.class,uriVariables);
         Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
 
-        ObjectMapper mapper = new ObjectMapper();
         StravaAthleteStats stravaAthleteStats = response.getBody();
 
         log.info("Athlete Stats: " +  stravaAthleteStats);
@@ -97,13 +95,33 @@ public class StravaRestClient {
 
         ObjectMapper objectMapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        TypeReference<List<StravaActivity>> jacksonTypeReference = new TypeReference<List<StravaActivity>>() {};
+        TypeReference<List<StravaActivity>> jacksonTypeReference = new TypeReference<>() {};
 
         List<StravaActivity> activities = objectMapper.readValue(root.traverse(), jacksonTypeReference);
 
         log.info("Athlete Stats: " +  activities);
 
         return activities;
+    }
+
+    public StravaDetailedActivity getDetailedActivity(String activityID) {
+        log.info("getting Detailed Athlete Activity");
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("ACTIVITY_ID", activityID);
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity entity = new HttpEntity<>(headers);
+        headers.setBearerAuth(stravaRefreshToken.getAccessToken());
+
+        ResponseEntity<StravaDetailedActivity> response
+                = restTemplate.exchange(GET_DETAILED_ACTIVITY, HttpMethod.GET,entity, StravaDetailedActivity.class, uriVariables);
+        Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
+
+        StravaDetailedActivity stravaDetailedActivity = response.getBody();
+
+        log.info("Athlete Detailed Activity: " +  stravaDetailedActivity);
+        return stravaDetailedActivity;
     }
 
     @Bean
