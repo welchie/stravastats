@@ -1,6 +1,5 @@
 package org.weewelchie.strava.beans;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,18 +8,15 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-@JsonIgnoreProperties
-public class StravaMap
-{
+public class StravaSegmentActivity {
+
     @JsonProperty("id")
     private String id;
 
-    @JsonProperty("polyline")
-    private String polyline;
-
-    @JsonProperty("summary_polyline")
-    private String summary_polyline;
+    @JsonProperty("visibility")
+    private String visibility;
 
     @JsonProperty("resource_state")
     private String resourceState;
+
 }
