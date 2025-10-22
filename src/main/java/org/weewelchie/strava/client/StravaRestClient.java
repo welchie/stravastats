@@ -44,6 +44,7 @@ public class StravaRestClient {
         this.stravaConfigProperties = stravaConfigProperties;
     }
 
+    //@Bean
     public StravaAthlete getAthleteByAccessToken()  {
 
 
