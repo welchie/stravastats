@@ -21,6 +21,7 @@ import java.util.List;
 @Getter
 public class StravaAthleteController {
 
+
     private StravaRestClient restClient;
 
     StravaAthleteController(StravaRestClient stravaRestClient)
