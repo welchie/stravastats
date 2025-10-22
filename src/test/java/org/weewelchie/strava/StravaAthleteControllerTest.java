@@ -96,9 +96,4 @@ public class StravaAthleteControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-
-//     @GetMapping("/athlete/activity/{ACTIVITY_ID}")
-//    public StravaDetailedActivity getAthleteDetailedActivity(@PathVariable(name = "ACTIVITY_ID") String activityID) throws IOException {
-
-
     }
