@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.weewelchie.strava.client.StravaRestClient;
+import org.weewelchie.strava.service.AthleteService;
 
 @Configuration
 @ConfigurationProperties(prefix = "strava")
@@ -21,14 +22,6 @@ public class StravaConfigProperties {
 
     private Integer athleteID;
 
-
-
-    private StravaRestClient stravaRestClient;
-
-    @Bean
-    public StravaRestClient getStravaRestClient() {
-        return stravaRestClient;
-    }
 
 
 }
