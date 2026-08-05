@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.HtmlUtils;
 import org.weewelchie.strava.client.StravaRestClient;
 import org.weewelchie.strava.data.beans.StravaActivity;
 import org.weewelchie.strava.data.beans.StravaAthleteStats;
@@ -83,6 +84,7 @@ public class GeminiController {
     }
 
     private String formatAsHtml(String title, String markdownContent) {
+        String safeTitle = HtmlUtils.htmlEscape(title == null ? "" : title);
         String base64Content = markdownContent == null ? "" : Base64.getEncoder()
                 .encodeToString(markdownContent.getBytes(StandardCharsets.UTF_8));
 
@@ -213,6 +215,6 @@ public class GeminiController {
             </script>
         </body>
         </html>
-        """.replace("{{title}}", title).replace("{{content}}", base64Content);
+        """.replace("{{title}}", safeTitle).replace("{{content}}", base64Content);
     }
 }
